@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="report_sales">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            Report
+                        </h2>
+                        <p>
+                            Report
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <data>
+        <record id="action_report_sales" model="ir.actions.report">
+            <field name="name">Sales Report</field>
+            <field name="model">sale.order.report</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sale_order_extended.report_sales</field>
+            <field name="report_file">sale_order_extended.report_sales</field>
+            <field name="print_report_name">(object.name)</field>
+            <field name="binding_model_id" ref="model_sale_order"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+
+<!--    <record id="view_report_salesperson_form" model="ir.ui.view">-->
+<!--        <field name="name">sale.report_salesperson.form</field>-->
+<!--        <field name="model">sale.order.report</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form string="Sales by Salesperson">-->
+<!--                <group>-->
+<!--                    <group>-->
+<!--                        <field name="user_id"/>-->
+<!--                        <field name="from_date"/>-->
+<!--                        <field name="to_date"/>-->
+<!--                    </group>-->
+<!--                </group>-->
+<!--                <footer>-->
+<!--                    <button string="Generate Report" name="generate_report_salesperson" type="object"-->
+<!--                            class="btn-primary"/>-->
+<!--                    <button string="Close" class="btn-primary" special="cancel"/>-->
+<!--                </footer>-->
+<!--            </form>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="action_report_salesperson_sub" model="ir.actions.act_window">-->
+<!--        <field name="name">Sales by Salesperson</field>-->
+<!--        <field name="res_model">sale.order.report</field>-->
+<!--        <field name="type">ir.actions.act_window</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--        <field name="view_id" ref="view_report_salesperson_form"/>-->
+<!--        <field name="target">new</field>-->
+<!--        <field name="binding_model_id" ref="sale.model_sale_order"/>-->
+<!--        <field name="binding_view_types">form</field>-->
+<!--    </record>-->
+
+<!--    <menuitem id="salesby_salesperson_sub" name="Sales Report" action="action_report_salesperson_sub"-->
+<!--              parent="sale.menu_sale_report" sequence="2"/>-->
+
+</odoo>

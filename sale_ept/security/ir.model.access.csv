@@ -1,0 +1,21 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_category_ept,Product Category,model_product_category_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_product_ept,Products,model_product_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_product_uom_category_ept,UOM Category,model_product_uom_category_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_res_partner_ept,Partner,model_res_partner_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_sale_order_ept,Sale Order,model_sale_order_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_product_uom_ept,Product UOM,model_product_uom_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_sale_order_line_ept,Sale Order Line,model_sale_order_line_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_crm_team_ept,CRM Team,model_crm_team_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_crm_lead_ept,CRM Lead,model_crm_lead_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_crm_lead_line_ept,CRM Lead Line,model_crm_lead_line_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_stock_warehouse_ept,Stock Warehouse,model_stock_warehouse_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_stock_location_ept,Stock Location,model_stock_location_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_stock_picking_ept,Stock Picking,model_stock_picking_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_stock_move_ept,Stock Move,model_stock_move_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_purchase_order_ept,Purchase Order,model_purchase_order_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_purchase_order_line_ept,Purchase Order Line,model_purchase_order_line_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_stock_inventory_ept,Stock Inventory,model_stock_inventory_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_stock_inventory_line_ept,Stock Inventory Line,model_stock_inventory_line_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_product_stock_update_ept,Stock Update,model_product_stock_update_ept,sale_ept.group_my_sales_person,1,1,1,1
+access_account_tax_ept,Account Tax,model_account_tax_ept,sale_ept.group_my_sales_person,1,1,1,1

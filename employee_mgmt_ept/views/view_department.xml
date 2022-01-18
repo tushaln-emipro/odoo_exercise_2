@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_res_department_ept_tree" model="ir.ui.view">
+        <field name="name">res.department.ept.tree</field>
+        <field name="model">department.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Department">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_res_department_ept_form" model="ir.ui.view">
+        <field name="name">res.department.ept.form</field>
+        <field name="model">department.ept</field>
+        <field name="arch" type="xml">
+            <form string="Department">
+                <group>
+                    <field name="name"/>
+                </group>
+                <group>
+                </group>
+                <notebook>
+                    <page string="Department Manager">
+                        <field name="department_manager_id">
+
+                        </field>
+                    </page>
+                    <page string="Employee">
+                        <field name="employee_ids">
+                            <tree>
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <record id="view_res_department_ept_search" model="ir.ui.view">
+        <field name="name">res.department.ept.search</field>
+        <field name="model">department.ept</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_res_department_ept" model="ir.actions.act_window">
+        <field name="name">Departments</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">department.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_res_department_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New department</p>
+        </field>
+    </record>
+    <menuitem id="menu_root" name="Employee Management"/>
+    <menuitem id="menu_sub1" name="HR" parent="menu_root"/>
+    <menuitem id="menu_sub2" name="Department" parent="menu_sub1" action="action_res_department_ept" sequence="1"/>
+    <menuitem id="menu_sub3" name="Shift" parent="menu_sub1" action="action_res_shift_ept" sequence="2"/>
+    <menuitem id="menu_sub4" name="Employee" parent="menu_sub1" action="action_employee_mgmt_ept" sequence="3"/>
+    <menuitem id="menu_sub5" name="Employee Leave" parent="menu_sub1" action="action_employee_leave_mgmt_ept" sequence="4"/>
+</odoo>

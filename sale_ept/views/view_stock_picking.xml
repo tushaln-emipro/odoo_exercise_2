@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_stock_picking_ept_tree" model="ir.ui.view">
+        <field name="name">stock.picking.ept.tree</field>
+        <field name="model">stock.picking.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Incoming Shipment">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="transaction_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_stock_picking_ept_form" model="ir.ui.view">
+        <field name="name">stock.picking.ept.form</field>
+        <field name="model">stock.picking.ept</field>
+        <field name="arch" type="xml">
+            <form string="Incoming Shipment">
+                <header>
+                    <button name="action_set_done" string="Complete" type="object" class="oe_highlight"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="action_set_cancelled" string="Cancelled" type="object" class="oe_highlight"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <field name="state" widget="statusbar" clickable="False" options="{'fold_field': 'fold'}"/>
+                </header>
+                <group>
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="sale_order_id"/>
+                        <field name="purchase_order_id"/>
+                    </group>
+                    <group>
+                        <field name="transaction_type"/>
+                        <field name="transaction_date"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Stock Move" name="stock_move">
+                        <field name="move_ids" widget="section_and_note_one2many" mode="tree">
+                            <tree string="Move Lines" editable="bottom">
+                                <control>
+                                    <create name="add_move_control" string="Add Move"/>
+                                </control>
+                                <field name="product_id"/>
+                                <field name="source_location_id"/>
+                                <field name="destination_location_id"/>
+                                <field name="qty_to_deliver"/>
+                                <field name="qty_delivered"/>
+                                <field name="state"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <record id="view_stock_picking_ept_search" model="ir.ui.view">
+        <field name="name">stock.picking.ept.search</field>
+        <field name="model">stock.picking.ept</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_incoming_shipment_ept" model="ir.actions.act_window">
+        <field name="name">Incoming Shipment</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.picking.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('transaction_type','=','In')]</field>
+        <field name="context">{'default_transaction_type' : 'In'}</field>
+        <field name="search_view_id" ref="view_stock_picking_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New Incoming Shipment</p>
+        </field>
+    </record>
+    <record id="action_delivery_order_ept" model="ir.actions.act_window">
+        <field name="name">Delivery Order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.picking.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('transaction_type','=','Out')]</field>
+        <field name="context">{'default_transaction_type' : 'Out'}</field>
+        <field name="search_view_id" ref="view_stock_picking_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New Delivery Order</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_sales_sub_inventory" name="Inventory" parent="menu_sales_root"/>
+    <menuitem id="menu_sales_sub_incoming_shipment" name="Incoming Shipment" parent="menu_sales_sub_inventory"
+              action="action_incoming_shipment_ept"/>
+    <menuitem id="menu_sales_sub_delivery_order" name="Delivery Order" parent="menu_sales_sub_inventory"
+              action="action_delivery_order_ept"/>
+
+</odoo>

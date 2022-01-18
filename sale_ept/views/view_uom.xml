@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_uom_ept_tree" model="ir.ui.view">
+        <field name="name">product.uom.category.ept.tree</field>
+        <field name="model">product.uom.category.ept</field>
+        <field name="arch" type="xml">
+            <tree string="UOM Category">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_uom_ept_form" model="ir.ui.view">
+        <field name="name">product.uom.category.ept.form</field>
+        <field name="model">product.uom.category.ept</field>
+        <field name="arch" type="xml">
+            <form string="UOM Category">
+                <group>
+                    <field name="name"/>
+                </group>
+                <group>
+                </group>
+                <notebook>
+                    <page string="UOMs">
+                        <field name="uom_ids">
+                            <tree>
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <record id="view_uom_ept_search" model="ir.ui.view">
+        <field name="name">product.uom.category.ept.search</field>
+        <field name="model">product.uom.category.ept</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_uom_ept" model="ir.actions.act_window">
+        <field name="name">UOM Category</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.uom.category.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_uom_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New UOM Category</p>
+        </field>
+    </record>
+    <menuitem id="menu_sales_sub_uom" name="UOM Category" parent="menu_sales_sub" action="action_uom_ept" sequence="1"/>
+</odoo>

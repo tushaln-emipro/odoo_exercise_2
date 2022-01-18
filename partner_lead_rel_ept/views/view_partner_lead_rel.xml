@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_partner_lead_rel_tree" model="ir.ui.view">
+        <field name="name">partner.lead.rel.tree</field>
+        <field name="model">partner.lead.rel</field>
+        <field name="arch" type="xml">
+            <tree string="Partner Leads" decoration-success="total_revenue > 10000">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="from_date"/>
+                <field name="to_date"/>
+                <field name="total_revenue"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_partner_lead_rel_form" model="ir.ui.view">
+        <field name="name">partner.lead.rel.form</field>
+        <field name="model">partner.lead.rel</field>
+        <field name="arch" type="xml">
+            <form string="Partner Leads">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="get_paid_order" type="object" class="oe_stat_button" icon="fa-check">
+                            <div class="o_stat_info">
+                                <field name="sale_order_count" class="o_stat_value"/>
+                                <span class="o_stat_text" attrs="{'invisible': [('leads_count', '&lt;', 2)]}">
+                                    View Paid Orders
+                                </span>
+                                <span class="o_stat_text" attrs="{'invisible': [('leads_count', '&gt;', 1)]}">
+                                    View Paid Orders
+                                </span>
+                            </div>
+                        </button>
+                        <button string="Get Pipeline Details" name="get_pipeline_details" type="object" icon="fa-list"
+                                class="oe_stat_button"/>
+                        <button name="get_view_leads" type="object" class="oe_stat_button" icon="fa-list">
+                            <div class="o_stat_info">
+                                <field name="leads_count" class="o_stat_value"/>
+                                <span class="o_stat_text" attrs="{'invisible': [('leads_count', '&lt;', 2)]}">
+                                    View Leads
+                                </span>
+                                <span class="o_stat_text" attrs="{'invisible': [('leads_count', '&gt;', 1)]}">
+                                    View Leads
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="partner_id" domain="[('is_company','=',True)]"/>
+                            <field name="from_date"/>
+                            <field name="to_date"/>
+                        </group>
+                        <group>
+                            <field name="partner_contact_ids" widget="many2many_tags"
+                                   domain="[('child_ids', '!=', False)]"/>
+                            <field name="lead_ids" widget="many2many_tags"/>
+                            <field name="total_revenue"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Salesperson Lead Count">
+                            <field name="salesperson_lead_count_ids" widget="section_and_note_one2many" mode="tree">
+                                <tree string="Salesperson Lead Count" create="false" delete="false">
+                                    <field name="salesperson_id"/>
+                                    <field name="total_pipelines"/>
+                                    <field name="total_revenue"/>
+                                    <field name="total_quotations"/>
+                                    <field name="total_sales_orders"/>
+                                    <field name="total_sales_orders_amounts"/>
+                                    <field name="conversation_amount"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_partner_lead_rel_search" model="ir.ui.view">
+        <field name="name">partner.lead.rel.search</field>
+        <field name="model">partner.lead.rel</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <group expand="0" string="Group By">
+                    <filter string="Partner" name="filter_partner" domain="[]"
+                            context="{'group_by':'partner_id'}"></filter>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_partner_lead_rel" model="ir.actions.act_window">
+        <field name="name">Partner Leads</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">partner.lead.rel</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_partner_lead_rel_search"/>
+        <field name="context">{'search_default_filter_partner': 1}</field>
+        <field name="help" type="html">
+            <p>Create New Partner Lead</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_customer_details_root" name="Customer Details"/>
+    <menuitem id="menu_customer_details_sub" name="Customer Details" parent="menu_customer_details_root"/>
+    <menuitem id="menu_my_customer_details" name="My Customer Details" parent="menu_customer_details_sub"
+              action="action_partner_lead_rel"/>
+</odoo>

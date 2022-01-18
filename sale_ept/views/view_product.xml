@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_product_ept_tree" model="ir.ui.view">
+        <field name="name">product.ept.tree</field>
+        <field name="model">product.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Product">
+                <field name="name"/>
+                <field name="sku"/>
+                <field name="sale_price"/>
+                <field name="product_type"/>
+                <field name="category_id"/>
+                <field name="product_stock"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_product_ept_form" model="ir.ui.view">
+        <field name="name">product.ept.form</field>
+        <field name="model">product.ept</field>
+        <field name="arch" type="xml">
+            <form string="Product">
+                <header>
+                    <button name="action_set_stock_update" string="Stock Update O" type="object" class="oe_highlight"/>
+                    <button name="%(action_stock_update_link)d" string="Stock Update A" type="action"
+                            class="oe_highlight"/>
+                </header>
+                <steet>
+                    <div class="oe_title">
+                        <label class="oe_edit_only" for="name" string="Product Name"/>
+                        <h1>
+                            <field name="name" placeholder="Product Name"/>
+                        </h1>
+                    </div>
+                </steet>
+                <notebook>
+                    <page string="General Information" name="general_information">
+                        <group>
+                            <group name="group_general">
+                                <field name="product_type" widget="radio"/>
+                                <field name="sku"/>
+                                <field name="barcode"/>
+                            </group>
+                            <group name="group_standard_price">
+                                <field name="sale_price"/>
+                                <field name="cost_price"/>
+                                <field name="weight"/>
+                                <field name="length"/>
+                                <field name="volume"/>
+                                <field name="width"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description"/>
+                        </group>
+                    </page>
+                    <page string="Category" name="category_information">
+                        <group>
+                            <field name="category_id"/>
+                        </group>
+                    </page>
+                    <page string="UOM" name="uom_information">
+                        <group>
+                            <field name="uom_id"/>
+                        </group>
+                    </page>
+                    <page string="Accounting" name="accounting_information">
+                        <group>
+                            <field name="tax_ids" widget="many2many_tags" domain="[('tax_use','=','Sales')]"/>
+                        </group>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <record id="view_product_ept_search" model="ir.ui.view">
+        <field name="name">product.ept.search</field>
+        <field name="model">product.ept</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="sku"/>
+                <field name="barcode"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_product_ept" model="ir.actions.act_window">
+        <field name="name">Product</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_product_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New Product</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_sales_sub_product" name="Product" parent="menu_sales_sub" action="action_product_ept"
+              sequence="4"/>
+
+</odoo>

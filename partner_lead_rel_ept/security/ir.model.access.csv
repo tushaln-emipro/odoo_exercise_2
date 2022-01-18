@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_partner_lead_rel,Partner Lead,model_partner_lead_rel,partner_lead_rel_ept.group_my_customer_person,1,1,1,1
+access_salesperson_lead_count,Salesperson Lead Count,model_salesperson_lead_count,partner_lead_rel_ept.group_my_customer_person,1,1,1,1

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="module_employee_mgmt_ept" model="ir.module.category">
+            <field name="name">Display Employees</field>
+            <field name="description">Show Employees Management Modules</field>
+        </record>
+        <record id="group_employee_mgmt_ept" model="res.groups">
+            <field name="name">Employee mgmt User</field>
+            <field name="category_id" ref="module_employee_mgmt_ept"/>
+        </record>
+        <record id="group_employee_mgmt_ept_manager" model="res.groups">
+            <field name="name">Employee mgmt Manager</field>
+            <field name="category_id" ref="module_employee_mgmt_ept"/>
+            <field name="implied_ids"
+                   eval="[(4, ref('group_employee_mgmt_ept'))]"/>
+        </record>
+        <record id="rule_employee_mgmt_ept" model="ir.rule">
+            <field name="name">Employee mgmt Rule</field>
+            <field ref="model_employee_leave_ept" name="model_id"/>
+            <field name="groups" eval="[(4, ref('group_employee_mgmt_ept'))]"/>
+            <field name="domain_force">
+                ['|','|',('employee_id.related_user.id','=',user.id)
+                ,('employee_id.manager_id.related_user.id','=',user.id)
+                ,('department_id.department_manager_id.id','=',user.id)]
+            </field>
+        </record>
+    </data>
+</odoo>

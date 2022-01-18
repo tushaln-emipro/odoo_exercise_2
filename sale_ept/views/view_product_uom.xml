@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_product_uom_ept_tree" model="ir.ui.view">
+        <field name="name">product.uom.ept.tree</field>
+        <field name="model">product.uom.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Product UOM">
+                <field name="name"/>
+                <field name="uom_category_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_product_uom_ept_form" model="ir.ui.view">
+        <field name="name">product.uom.ept.form</field>
+        <field name="model">product.uom.ept</field>
+        <field name="arch" type="xml">
+            <form string="Product UOM">
+                <group>
+                    <field name="name"/>
+                </group>
+                <group>
+                </group>
+                <notebook>
+                    <page string="UOM Category">
+                        <field name="uom_category_id">
+                            <tree>
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <record id="view_product_uom_ept_search" model="ir.ui.view">
+        <field name="name">product.uom.ept.search</field>
+        <field name="model">product.uom.ept</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <group expand="0" string="Group By">
+                    <filter string="Category" name="filter_uom_category" domain="[]"
+                            context="{'group_by':'uom_category_id'}"></filter>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_product_uom_ept" model="ir.actions.act_window">
+        <field name="name">Product UOM</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.uom.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_product_uom_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New Product UOM</p>
+        </field>
+    </record>
+    <menuitem id="menu_sales_sub_product_uom" name="Product UOM" parent="menu_sales_sub" action="action_product_uom_ept"
+              sequence="2"/>
+</odoo>

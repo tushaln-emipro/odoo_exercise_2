@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="view_project_tags_extended_tree" model="ir.ui.view">
+        <field name="name">project.tags.extended</field>
+        <field name="model">project.tags</field>
+        <field name="inherit_id" ref="project.project_tags_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="partner_ids" widget="many2many_tags"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

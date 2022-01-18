@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_stock_location_ept_tree" model="ir.ui.view">
+        <field name="name">stock.location.ept.tree</field>
+        <field name="model">stock.location.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Stock Location">
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="location_type"/>
+                <field name="is_scrap_location"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_stock_location_ept_form" model="ir.ui.view">
+        <field name="name">stock.location.ept.form</field>
+        <field name="model">stock.location.ept</field>
+        <field name="arch" type="xml">
+            <form string="Stock Location">
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="parent_id"/>
+                    </group>
+                    <group>
+                        <field name="location_type"/>
+                        <field name="is_scrap_location"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="view_stock_location_ept_search" model="ir.ui.view">
+        <field name="name">stock.location.ept.search</field>
+        <field name="model">stock.location.ept</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_stock_location_ept" model="ir.actions.act_window">
+        <field name="name">Stock Location</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.location.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_stock_location_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New Stock Location</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_sales_sub_location" name="Stock Location" parent="menu_sales_sub_configuration"
+              action="action_stock_location_ept"/>
+
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+
+        <!--Sequence for Purchase Order-->
+        <record id="seq_purchase_order" model="ir.sequence">
+            <field name="name">Purchase Order</field>
+            <field name="code">purchase.order</field>
+            <field name="prefix">PO</field>
+            <field name="padding">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!--Sequence for Incoming Shipment-->
+        <record id="seq_incoming_shipment_ept" model="ir.sequence">
+            <field name="name">Incoming Shipment</field>
+            <field name="code">picking.in</field>
+            <field name="prefix">WH | IN | </field>
+            <field name="padding">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!--Sequence for Delivery Order-->
+        <record id="seq_delivery_order_ept" model="ir.sequence">
+            <field name="name">Delivery Order</field>
+            <field name="code">picking.out</field>
+            <field name="prefix">WH | OUT | </field>
+            <field name="padding">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

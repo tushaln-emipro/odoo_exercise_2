@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_employee_leave_ept_tree" model="ir.ui.view">
+        <field name="name">employee.leave.ept.tree</field>
+        <field name="model">employee.leave.ept</field>
+        <field name="arch" type="xml">
+            <tree string="employee Leaves">
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_employee_leave_ept_form" model="ir.ui.view">
+        <field name="name">employee.leave.ept.form</field>
+        <field name="model">employee.leave.ept</field>
+        <field name="arch" type="xml">
+            <form string="employee leaves">
+                <group>
+                    <group>
+                        <field name="employee_id" widget='selection'/>
+                        <field name="department_id" />
+                        <field name="status"/>
+                    </group>
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="description"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="view_employee_leave_ept_search" model="ir.ui.view">
+        <field name="name">employee.leave.ept.search</field>
+        <field name="model">employee.leave.ept</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+
+                <!--                <group expand="0" string="Group By">-->
+                <!--                    <filter string="Employee" name="filter_position" domain="[]"-->
+                <!--                            context="{'group_by':'employee_id'}"></filter>-->
+                <!--                    <filter string="Department" name="filter_department" domain="[]"-->
+                <!--                            context="{'group_by':'department_id '}"></filter>-->
+                <!--                </group>-->
+            </search>
+        </field>
+    </record>
+    <record id="action_employee_leave_mgmt_ept" model="ir.actions.act_window">
+        <field name="name">Employee leave</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">employee.leave.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_employee_leave_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New employee Leave</p>
+        </field>
+    </record>
+</odoo>

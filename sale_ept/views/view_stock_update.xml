@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_stock_update_form" model="ir.ui.view">
+        <field name="name">product.stock.update.form</field>
+        <field name="model">product.stock.update.ept</field>
+        <field name="arch" type="xml">
+            <form string="Stock Update">
+                <group>
+                    <group>
+                        <field name="location_id"/>
+                        <field name="available_stock"/>
+                    </group>
+                    <group>
+                        <field name="counted_qty"/>
+                        <field name="difference_qty"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Update Stock" name="action_update_stock" type="object" class="btn-primary"/>
+                    <button string="Close" class="btn-primary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_stock_update_link" model="ir.actions.act_window">
+        <field name="name">Stock Update</field>
+        <field name="res_model">product.stock.update.ept</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_stock_update_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_product_ept"/>
+        <field name="binding_type">action</field>
+        <field name="binding_view_types">form</field>
+    </record>
+</odoo>

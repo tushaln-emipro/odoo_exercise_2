@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="module_my_sale_ept" model="ir.module.category">
+            <field name="name">Display My Sales Persons</field>
+            <field name="description">Show My Sales Modules</field>
+        </record>
+        <record id="group_my_sales_person" model="res.groups">
+            <field name="name">My Sales Person User</field>
+            <field name="category_id" ref="module_my_sale_ept"/>
+        </record>
+        <record id="group_my_sales_manager" model="res.groups">
+            <field name="name">Sales Person Manager</field>
+            <field name="category_id" ref="module_my_sale_ept"/>
+            <field name="implied_ids" eval="[(4, ref('group_my_sales_person'))]"/>
+        </record>
+
+        <record id="rule_my_sales_user" model="ir.rule">
+            <field name="name">My Sales Person User Rule</field>
+            <field ref="model_sale_order_ept" name="model_id"/>
+            <field name="groups" eval="[(4, ref('group_my_sales_person'))]"/>
+            <field name="domain_force">[('salesperson.id','=',user.id)]</field>
+        </record>
+
+        <record id="rule_my_sales_manager" model="ir.rule">
+            <field name="name">My Sales Person Manager Rule</field>
+            <field ref="model_sale_order_ept" name="model_id"/>
+            <field name="groups" eval="[(4, ref('group_my_sales_manager'))]"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_stock_move_ept_tree" model="ir.ui.view">
+        <field name="name">stock.move.ept.tree</field>
+        <field name="model">stock.move.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Stock Move">
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="uom_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_stock_move_ept_form" model="ir.ui.view">
+        <field name="name">stock.move.ept.form</field>
+        <field name="model">stock.move.ept</field>
+        <field name="arch" type="xml">
+            <form string="Incoming Shipment">
+                <group>
+                    <group>
+                        <field name="product_id"/>
+                        <field name="uom_id"/>
+                        <field name="source_location_id"/>
+                        <field name="destination_location_id"/>
+                        <field name="qty_to_deliver"/>
+                        <field name="qty_delivered"/>
+                    </group>
+                    <group>
+                        <field name="sale_line_id"/>
+                        <field name="purchase_line_id"/>
+                        <field name="stock_inventory_id"/>
+                        <field name="picking_id"/>
+                        <field name="state"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="view_stock_move_ept_search" model="ir.ui.view">
+        <field name="name">stock.move.ept.search</field>
+        <field name="model">stock.move.ept</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_stock_move_ept" model="ir.actions.act_window">
+        <field name="name">Stock Move</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.move.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_stock_move_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New Stock Move</p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_sale_order_extended_tree" model="ir.ui.view">
+        <field name="name">sale.order.extended</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="date_order" position="after">
+                <field name="crm_lead_opportunity_id"/>
+                <field name="is_all_picking_completed"/>
+            </field>
+        </field>
+    </record>
+    <record id="view_sale_order_extended_form" model="ir.ui.view">
+        <field name="name">sale.order.extended.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form/header/field[@name='state']" position="before">
+                <button name="action_manage_deposits" string="Manage Deposits" type="object" class="oe_highlight"/>
+                <button name="action_scan_all" string="Scan All" type="object" class="oe_highlight"/>
+
+                <button name="action_perform_confirm" id="action_perform_confirm" string="Perform Confirm" type="object"
+                        attrs="{'invisible': [('state', 'not in', ['sent'])]}" class="btn-primary"/>
+                <button name="action_perform_confirm" string="Perform Confirm" type="object"
+                        attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>
+
+            </xpath>
+            <field name="date_order" position="after">
+                <field name="crm_lead_opportunity_id"/>
+            </field>
+
+            <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='name']" position="after">
+                <field name="warehouse_ept_id"/>
+                <field name="history_unit_price"/>
+            </xpath>
+
+            <field name="sale_order_template_id" position="after">
+                <field name="product_tmpl_ids" widget="many2many_tags"/>
+                <field name="profit_value"/>
+                <field name="profit_margin"/>
+            </field>
+
+        </field>
+    </record>
+
+    <record id="view_sale_order_line_extended_tree" model="ir.ui.view">
+        <field name="name">sale.order.line.extended</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <tree string="Sale Order Lines">
+                <field name="order_id"/>
+                <field name="product_id"/>
+                <field name="price_unit"/>
+                <field name="price_subtotal"/>
+                <field name="product_uom"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_sale_order_search_extended" model="ir.ui.view">
+        <field name="name">sale.order.search.extended</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="/search/filter[@name='my_sale_orders_filter']" position="after">
+                <filter string="Picking completed" name="is_all_picking_completed"
+                        domain="[('is_all_picking_completed', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem id="menu_sale_extended_root" name="Sale Extended"/>
+    <menuitem id="menu_sale_sub_extended" name="Sale Order" parent="menu_sale_extended_root"
+              action="sale.action_orders"/>
+
+    <record id="view_merge_sales_orders_form" model="ir.ui.view">
+        <field name="name">sale.order.sales.orders.form</field>
+        <field name="model">merge.sale.order</field>
+        <field name="arch" type="xml">
+            <form string="Stock Update">
+                <group>
+                    <group>
+                        <field name="merge_options"/>
+                        <field name="selected_orders" attrs="{'invisible': [('merge_options', 'not in', ['3','4'])]}"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="marge_order" string="Marge Order" type="object" class="oe_highlight"/>
+                    <button string="Close" class="btn-primary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="model_sale_order_action_merge_sales_orders" model="ir.actions.server">
+        <field name="name">Merge Sales Orders</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_merge_sales_orders()</field>
+    </record>
+
+</odoo>

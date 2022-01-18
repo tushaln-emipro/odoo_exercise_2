@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_employee_ept_tree" model="ir.ui.view">
+        <field name="name">employee.ept.tree</field>
+        <field name="model">employee.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Employees">
+                <field name="name"/>
+                <field name="job_position"/>
+                <field name="hiredate"/>
+                <field name="gender"/>
+                <field name="job_type"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_employee_ept_form" model="ir.ui.view">
+        <field name="name">employee.ept.form</field>
+        <field name="model">employee.ept</field>
+        <field name="arch" type="xml">
+            <form string="Employees">
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="gender"/>
+                        <field name="job_type"/>
+                        <field name="hiredate"/>
+                        <field name="job_position"/>
+                        <field name="shift_id"/>
+                    </group>
+                    <group>
+                        <field name="department_id"/>
+                        <field name="is_manager"/>
+                        <field name="manager_id" widget='selection'/>
+<!--                        <field name="manager_id" options="{'no_create': False, 'no_open': False}"/>-->
+                        <field name="related_user"/>
+                        <field name="salary"/>
+                        <field name="increment_percentage"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Employee">
+                        <field name="employee_ids">
+                            <tree>
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <record id="view_employee_ept_search" model="ir.ui.view">
+        <field name="name">employee.ept.search</field>
+        <field name="model">employee.ept</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="job_position"/>
+                <field name="department_id"/>
+
+                <filter name="filter_jobtype_permanent" string="Permanent" domain="[('job_type','=','Permanent')]"/>
+                <filter name="filter_jobtype_adhoc" string="Ad Hoc" domain="[('job_type','=','Ad Hoc')]"/>
+
+                <filter name="filter_male" string="Male" domain="[('gender','=','Male')]"/>
+                <filter name="filter_female" string="Female" domain="[('gender','=','Female')]"/>
+                <filter name="filter_transgender" string="Transgender" domain="[('gender','=','Transgender')]"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Job Position" name="filter_position" domain="[]"
+                            context="{'group_by':'job_position'}"></filter>
+                    <filter string="Department" name="filter_department" domain="[]"
+                            context="{'group_by':'department_id'}"></filter>
+                    <filter string="Job Type" name="filter_jobtype" domain="[]"
+                            context="{'group_by':'job_type'}"></filter>
+                    <filter string="Gender" name="filter_gender" domain="[]" context="{'group_by':'gender'}"></filter>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_employee_mgmt_ept" model="ir.actions.act_window">
+        <field name="name">Employee</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">employee.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_employee_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New Employee</p>
+        </field>
+    </record>
+</odoo>

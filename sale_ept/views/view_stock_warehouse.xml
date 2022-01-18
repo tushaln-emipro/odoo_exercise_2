@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_stock_warehouse_ept_tree" model="ir.ui.view">
+        <field name="name">stock.warehouse.ept.tree</field>
+        <field name="model">stock.warehouse.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Stock Warehouse">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="address_id"/>
+                <field name="stock_location_id"/>
+                <field name="view_location_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_stock_warehouse_ept_form" model="ir.ui.view">
+        <field name="name">stock.warehouse.ept.form</field>
+        <field name="model">stock.warehouse.ept</field>
+        <field name="arch" type="xml">
+            <form string="Stock Warehouse">
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="address_id"/>
+                    </group>
+                    <group>
+                        <field name="stock_location_id" domain="[('location_type','=','Internal')]"/>
+                        <field name="view_location_id" domain="[('location_type','=','View')]"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="view_stock_warehouse_ept_search" model="ir.ui.view">
+        <field name="name">stock.warehouse.ept.search</field>
+        <field name="model">stock.warehouse.ept</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_stock_warehouse_ept" model="ir.actions.act_window">
+        <field name="name">Stock Warehouse</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.warehouse.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_stock_warehouse_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New Stock Warehouse</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_sales_sub_configuration" name="Configuration" parent="menu_sales_root"/>
+    <menuitem id="menu_sales_sub_warehouse" name="Stock Warehouse" parent="menu_sales_sub_configuration"
+              action="action_stock_warehouse_ept"/>
+
+</odoo>

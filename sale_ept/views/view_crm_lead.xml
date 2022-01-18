@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_crm_lead_ept_tree" model="ir.ui.view">
+        <field name="name">crm.lead.ept.tree</field>
+        <field name="model">crm.lead.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Sale Order">
+                <field name="partner_id"/>
+                <field name="team_id"/>
+                <field name="user_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_crm_lead_ept_form" model="ir.ui.view">
+        <field name="name">crm.lead.ept.form</field>
+        <field name="model">crm.lead.ept</field>
+        <field name="arch" type="xml">
+            <form string="CRM Team">
+                <header>
+                    <button name="action_set_qualified" string="Qualified" type="object" class="oe_highlight"
+                            attrs="{'invisible': [('state', '!=', 'New')]}"/>
+                    <button name="action_set_proposition" string="Proposition" type="object" class="oe_highlight"
+                            attrs="{'invisible': [('state', '!=', 'Qualified')]}"/>
+                    <button name="action_set_won" string="Won" type="object" class="oe_highlight"
+                            attrs="{'invisible': [('state', '!=', 'Proposition')]}"/>
+                    <button name="action_set_lost" string="Lost" type="object" class="oe_highlight"
+                            attrs="{'invisible': [('state', '!=', 'Proposition')]}"/>
+                    <button name="action_generate_sales_quotation" string="Generate Sales Quotation" type="object"
+                            class="oe_highlight" attrs="{'invisible': [('state', '!=', 'Won')]}"/>
+                    <field name="state" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}"/>
+                </header>
+                <group>
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="team_id"/>
+                        <field name="user_id"/>
+                    </group>
+                    <group>
+                        <field name="next_followup_date"/>
+                        <field name="won_date" readonly="1" attrs="{'invisible': [('state', '!=', 'Won')]}"/>
+                        <field name="lost_reason" attrs="{'invisible': [('state', '!=', 'Lost')]}"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Order Line" name="lead_lines">
+                        <field name="lead_line_ids" mode="tree">
+                            <tree string="Lead Lines" widget="section_and_note_one2many" editable="bottom">
+                                <control>
+                                    <create name="add_product_control" string="Add a product"/>
+                                </control>
+                                <field name="product_id"/>
+                                <field name="description"/>
+                                <field name="expected_sell_qty"/>
+                                <field name="uom_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Partner Details" name="partner_details">
+                        <group>
+                            <group>
+                                <field name="partner_name"/>
+                                <field name="partner_email"/>
+                                <field name="partner_phone_no"/>
+                            </group>
+                            <group>
+                                <field name="partner_country_id"/>
+                                <field name="partner_state_id"/>
+                                <field name="partner_city_id"/>
+                            </group>
+                        </group>
+                        <group>
+                            <button name="generate_customer" string="Generate Customer" type="object"
+                                    class="oe_highlight" attrs="{'invisible': [('state', '!=', 'Won')]}"/>
+                        </group>
+                    </page>
+                    <page string="Orders Details" name="orders_details">
+                        <field name="order_ids">
+                            <tree create="false" delete="false">
+                                <field name="order_no"/>
+                                <field name="partner_id"/>
+                                <field name="order_date"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <record id="view_crm_lead_ept_search" model="ir.ui.view">
+        <field name="name">crm.lead.ept.search</field>
+        <field name="model">crm.lead.ept</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_crm_lead_ept" model="ir.actions.act_window">
+        <field name="name">CRM Lead</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">crm.lead.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_crm_lead_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New Quotations</p>
+        </field>
+    </record>
+    <menuitem id="menu_sales_sub_crm_quotations" name="CRM Lead" parent="menu_sales_sub_crm"
+              action="action_crm_lead_ept" sequence="2"/>
+</odoo>

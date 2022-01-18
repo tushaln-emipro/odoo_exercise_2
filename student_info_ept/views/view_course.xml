@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_res_course_ept_tree" model="ir.ui.view">
+        <field name="name">res.course.ept.tree</field>
+        <field name="model">course.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Localization">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_res_course_ept_form" model="ir.ui.view">
+        <field name="name">res.course.ept.form</field>
+        <field name="model">course.ept</field>
+        <field name="arch" type="xml">
+            <form string="Localization">
+                <group>
+                    <field name="name"/>
+                </group>
+                <group>
+                </group>
+                <notebook>
+                    <page string="Student">
+                        <field name="student_ids">
+                            <tree>
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <record id="view_res_course_ept_search" model="ir.ui.view">
+        <field name="name">res.course.ept.search</field>
+        <field name="model">course.ept</field>
+        <field name="arch" type="xml">
+            <search>
+               <field name="name"/>
+                    <field name="name"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_res_course_ept" model="ir.actions.act_window">
+        <field name="name">course</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">course.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_res_course_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New course</p>
+        </field>
+    </record>
+    <menuitem id="menu_root" name="Student Info"/>
+    <menuitem id="menu_sub1" name="Student Info" parent="menu_root"/>
+    <menuitem id="menu_sub2" name="Student" parent="menu_sub1" action="action_res_student_ept" sequence="1"/>
+    <menuitem id="menu_sub3" name="Course" parent="menu_sub1" action="action_res_course_ept" sequence="2"/>
+</odoo>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_sale_order_ept_tree" model="ir.ui.view">
+        <field name="name">sale.order.ept.tree</field>
+        <field name="model">sale.order.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Sale Order">
+                <field name="order_no"/>
+                <field name="order_date"/>
+                <field name="partner_id"/>
+                <field name="salesperson"/>
+                <field name="total_weight"/>
+                <field name="total_volume"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_sale_order_ept_form" model="ir.ui.view">
+        <field name="name">sale.order.ept.form</field>
+        <field name="model">sale.order.ept</field>
+        <field name="arch" type="xml">
+            <form string="Sale Order">
+                <header>
+                    <button name="action_set_sale_order_confirm" string="Confirm" type="object" class="oe_highlight"/>
+                    <button name="action_set_delivery_order" string="Delivery Order" type="object"
+                            class="oe_highlight"/>
+                    <button name="action_set_stock_move" string="Stock move" type="object" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}"/>
+                </header>
+                <group>
+                    <group>
+                        <field name="order_no"/>
+                        <field name="partner_id"/>
+                        <field name="partner_invoice_id" domain="[('address_type','=','Invoice')]"/>
+                        <field name="partner_shipping_id" domain="[('address_type','=','Shipping')]"/>
+                        <field name="warehouse_id"/>
+                    </group>
+                    <group>
+                        <field name="order_date"/>
+                        <field name="salesperson"/>
+                        <field name="total_weight"/>
+                        <field name="total_volume"/>
+                        <field name="order_total"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Order Line" name="order_lines">
+                        <field name="order_line" widget="section_and_note_one2many" mode="tree">
+                            <tree string="Sales Order Lines" editable="bottom">
+                                <control>
+                                    <create name="add_product_control" string="Add a product"/>
+                                </control>
+                                <field name="order_no" invisible="1"/>
+                                <field name="warehouse_id"/>
+                                <field name="product_id"/>
+                                <field name="quantity"/>
+                                <field name="unit_price"/>
+                                <field name="subtotal_without_tax"/>
+                                <field name="subtotal_with_tax"/>
+                                <field name="uom_id"/>
+                                <field name="delivered_qty"/>
+                                <field name="cancelled_qty"/>
+                                <field name="state"/>
+                            </tree>
+                        </field>
+                        <group name="note_group" col="6" class="mt-2 mt-md-0">
+                            <group colspan="4">
+
+                            </group>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                <field name="amount_untaxed" widget='monetary'
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="total_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="total_amount"/>
+                                </div>
+                                <field name="total_amount" nolabel="1" class="oe_subtotal_footer_separator"
+                                       widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                            <div class="oe_clear"/>
+                        </group>
+                    </page>
+                    <page string="Pickings" name="pickings">
+                        <field name="picking_ids" widget="section_and_note_one2many" mode="tree">
+
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <record id="view_sale_order_ept_search" model="ir.ui.view">
+        <field name="name">sale.order.ept.search</field>
+        <field name="model">sale.order.ept</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="order_no"/>
+                <field name="partner_id"/>
+                <field name="order_date"/>
+                <group expand="0" string="Group By">
+                    <filter string="Customer" name="filter_customer" domain="[]"
+                            context="{'group_by':'partner_id'}"></filter>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_sale_order_ept" model="ir.actions.act_window">
+        <field name="name">Sale Order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_sale_order_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New Sale Order</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_sales_sub_sale_order" name="Sale Orders" parent="menu_sales_sub" action="action_sale_order_ept"
+              sequence="5"/>
+
+</odoo>

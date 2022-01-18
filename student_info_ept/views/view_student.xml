@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_res_student_ept_tree" model="ir.ui.view">
+        <field name="name">res.student.ept.tree</field>
+        <field name="model">student.ept</field>
+        <field name="arch" type="xml">
+            <tree string="Localization">
+                <field name="name"/>
+                <field name="student_class"/>
+                <field name="birthdate"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_res_student_ept_form" model="ir.ui.view">
+        <field name="name">res.student.ept.form</field>
+        <field name="model">student.ept</field>
+        <field name="arch" type="xml">
+            <form string="Localization">
+                <group>
+                    <field name="name"/>
+                    <field name="student_class"/>
+                    <field name="birthdate"/>
+                </group>
+                <group>
+                </group>
+                 <notebook>
+                    <page string="Course">
+                        <field name="course_ids">
+                            <tree>
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <record id="view_res_student_ept_search" model="ir.ui.view">
+        <field name="name">res.student.ept.search</field>
+        <field name="model">student.ept</field>
+        <field name="arch" type="xml">
+            <search>
+               <field name="name"/>
+                    <field name="student_class"/>
+            </search>
+        </field>
+    </record>
+    <record id="action_res_student_ept" model="ir.actions.act_window">
+        <field name="name">Student</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">student.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_res_student_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New Student</p>
+        </field>
+    </record>
+
+</odoo>

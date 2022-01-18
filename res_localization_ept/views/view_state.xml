@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_res_state_ept_tree" model="ir.ui.view">
+        <field name="name">res.state.ept.tree</field>
+        <field name="model">res.state.ept</field>
+        <field name="arch" type="xml">
+            <tree string="State">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+    <record id="veiw_res_state_ept_form" model="ir.ui.view">
+        <field name="name">res.state.ept.form</field>
+        <field name="model">res.state.ept</field>
+        <field name="arch" type="xml">
+            <form string="State">
+<!--                <header>-->
+<!--                    <button name="set_country_details" string="Set Country Details" type="object"/>-->
+<!--                </header>-->
+                <group>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="country_id"/>
+                </group>
+                <group></group>
+                  <notebook>
+                    <page string="City">
+                        <field name="city_ids">
+                            <tree>
+                                <field name="name"/>
+                                <field name="code"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <record id="view_res_state_ept_search" model="ir.ui.view">
+        <field name="name">res.state.ept.search</field>
+        <field name="model">res.state.ept</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="country_id"/>
+                 <group expand="0" string="Group By">
+                    <filter string="Country" name="filter_state_country" domain="[]"
+                            context="{'group_by':'country_id'}"></filter>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_res_state_ept" model="ir.actions.act_window">
+        <field name="name">State</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.state.ept</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_res_state_ept_search"/>
+        <field name="help" type="html">
+            <p>Create New State</p>
+        </field>
+    </record>
+
+</odoo>

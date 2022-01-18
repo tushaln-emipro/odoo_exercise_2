@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <!--Add new tag of From Lead-->
+        <record id="tag_crm_lead_extended" model="crm.tag">
+            <field name="name">From Lead</field>
+        </record>
+
+         <!--Add new product for shipping-->
+        <record id="product_shipping_extended" model="product.product">
+            <field name="name">Shipping</field>
+        </record>
+
+    </data>
+</odoo>
