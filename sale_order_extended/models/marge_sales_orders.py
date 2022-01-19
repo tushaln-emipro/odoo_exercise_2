@@ -19,6 +19,20 @@ class MergeOrders(models.TransientModel):
     selected_orders = fields.Many2one(comodel_name="sale.order", domain=selected_orders,
                                       string="Selected orders", help="Selected orders")
 
+    @api.model
+    def default_get(self, fields):
+        """
+        This method overrides checking some conditions before opening the Marge Sales Orders wizard form.
+        :return: res return as per getting from the super.
+        """
+        res = super(MergeOrders, self).default_get(fields)
+        sales_orders = self.env['sale.order'].browse(self.env.context.get('active_ids'))
+        if sales_orders.filtered(lambda so: so.state != 'draft'):
+            raise ValidationError('Only draft orders can be marge.')
+        if len(set(sales_orders.partner_id.ids)) > 1:
+            raise ValidationError('Partners must be same.')
+        return res
+
     def marge_order(self):
         """
         This method for the process of the Marge sale orders
@@ -39,28 +53,20 @@ class MergeOrders(models.TransientModel):
         and cancel/delete remaining orders as the selected option.
         :param order_ids: ids of SO from the selected in the tree view
         :param option: SO as selected from the M2O field
-        :return: not any return Triplets
+        :return: not any return   ...
         """
         orders = self.get_sales_orders(order_ids)
         _dict = dict()
         for line in orders.order_line:
+            product_qty = line.product_uom_qty
             if _dict.get((line.product_id.id, line.price_unit, tuple(line.tax_id.ids)), False):
-                _dict.update({(line.product_id.id, line.price_unit, tuple(line.tax_id.ids)):
-                                  {'product_id': line.product_id.id,
-                                   'product_uom_qty': line.product_uom_qty + _dict.get(
-                                       (line.product_id.id, line.price_unit, tuple(line.tax_id.ids))).get(
-                                       'product_uom_qty'),
-                                   'product_uom': line.product_uom.id, 'price_unit': line.price_unit,
-                                   'tax_id': line.tax_id.ids}})
-            else:
-                _dict.update({(line.product_id.id, line.price_unit, tuple(line.tax_id.ids)):
-                                  {'product_id': line.product_id.id, 'product_uom_qty': line.product_uom_qty,
-                                   'product_uom': line.product_uom.id, 'price_unit': line.price_unit,
-                                   'tax_id': line.tax_id.ids}})
+                product_qty += _dict.get((line.product_id.id, line.price_unit, tuple(line.tax_id.ids))).get(
+                    'product_uom_qty')
 
-            # order_line.append((0, 0, {'product_id': line.product_id.id, 'product_uom_qty': line.product_uom_qty,
-            #                           'product_uom': line.product_uom.id, 'price_unit': line.price_unit,
-            #                           'tax_id': line.tax_id.id}))
+            _dict.update({(line.product_id.id, line.price_unit, tuple(line.tax_id.ids)):
+                              {'product_id': line.product_id.id, 'name': line.product_id.name,
+                               'product_uom_qty': product_qty, 'product_uom': line.product_uom.id,
+                               'price_unit': line.price_unit, 'tax_id': line.tax_id.ids}})
 
         order_line = [(0, 0, updated_dict[1]) for updated_dict in _dict.items()]
         if order_line:
@@ -72,9 +78,8 @@ class MergeOrders(models.TransientModel):
                     break
                 self.env['sale.order'].create(sale_order_val)
             else:
-                marge_with_order = orders.filtered(lambda so: so.id == self.selected_orders.id)
-                marge_with_order.order_line = [(5, 0, 0)]
-                marge_with_order.write({'order_line': order_line})
+                self.selected_orders.order_line = [(5, 0, 0)]
+                self.selected_orders.write({'order_line': order_line})
 
         if option == '1':
             orders.action_cancel()

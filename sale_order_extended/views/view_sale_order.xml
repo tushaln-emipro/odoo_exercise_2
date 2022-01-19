@@ -81,10 +81,8 @@
         <field name="arch" type="xml">
             <form string="Stock Update">
                 <group>
-                    <group>
-                        <field name="merge_options"/>
-                        <field name="selected_orders" attrs="{'invisible': [('merge_options', 'not in', ['3','4'])]}"/>
-                    </group>
+                    <field name="merge_options"/>
+                    <field name="selected_orders" attrs="{'invisible': [('merge_options', 'not in', ['3','4'])]}"/>
                 </group>
                 <footer>
                     <button name="marge_order" string="Marge Order" type="object" class="oe_highlight"/>
@@ -94,13 +92,25 @@
         </field>
     </record>
 
-    <record id="model_sale_order_action_merge_sales_orders" model="ir.actions.server">
+    <record id="model_sale_order_action_merge_sales_orders" model="ir.actions.act_window">
         <field name="name">Merge Sales Orders</field>
-        <field name="model_id" ref="sale.model_sale_order"/>
-        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="res_model">merge.sale.order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_merge_sales_orders_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_sale_order"/>
+        <field name="binding_type">action</field>
         <field name="binding_view_types">list</field>
-        <field name="state">code</field>
-        <field name="code">action = records.action_merge_sales_orders()</field>
     </record>
+
+<!--    <record id="model_sale_order_action_merge_sales_orders" model="ir.actions.server">-->
+<!--        <field name="name">Merge Sales Orders</field>-->
+<!--        <field name="model_id" ref="sale.model_sale_order"/>-->
+<!--        <field name="binding_model_id" ref="sale.model_sale_order"/>-->
+<!--        <field name="binding_view_types">list</field>-->
+<!--        <field name="state">code</field>-->
+<!--        <field name="code">action = records.action_merge_sales_orders()</field>-->
+<!--    </record>-->
 
 </odoo>
