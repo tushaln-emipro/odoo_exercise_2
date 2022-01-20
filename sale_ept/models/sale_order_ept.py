@@ -79,55 +79,35 @@ class SaleOrder(models.Model):
         stock_moves = []
         if warehouses:
             for warehouse in warehouses[0].ids:
-                temp_stock_moves = []
                 for order_line in self.order_line:
                     if (order_line.warehouse_id.id == warehouse):
                         order_line.state = 'confirmed'
                         if (warehouse == self.warehouse_id.id):
-                            stock_moves.append(
-                                (0, 0, {'product_id': order_line.product_id.id, 'uom_id': order_line.uom_id.id,
-                                        'qty_to_deliver': order_line.quantity, 'sale_line_id': order_line.id,
-                                        'source_location_id': order_line.warehouse_id.stock_location_id.id,
-                                        'destination_location_id': customer_location.id}))
+                            stock_moves.append(self.make_stock_moves(order_line, customer_location))
                         else:
-                            temp_stock_moves.append(
-                                (0, 0, {'product_id': order_line.product_id.id, 'uom_id': order_line.uom_id.id,
-                                        'qty_to_deliver': order_line.quantity, 'sale_line_id': order_line.id,
-                                        'source_location_id': order_line.warehouse_id.stock_location_id.id,
-                                        'destination_location_id': customer_location.id}))
-                if temp_stock_moves:
-                    delivery_order.append({'name': self.env['ir.sequence'].next_by_code('picking.out') or _('New'),
-                                           'partner_id': self.partner_id.id, 'sale_order_id': self.id,
-                                           'transaction_type': 'Out', 'move_ids': temp_stock_moves})
+                            delivery_order.append(self.make_delivery_order(self.make_stock_moves(order_line, customer_location)))
 
         if len(self.order_line.filtered(lambda e: e.warehouse_id.id == 0).ids) != 0:
             for order_line in self.order_line.filtered(lambda e: e.warehouse_id.id == 0):
                 order_line.state = 'confirmed'
                 order_line.warehouse_id = self.warehouse_id.id
-                stock_moves.append((0, 0, {'product_id': order_line.product_id.id, 'uom_id': order_line.uom_id.id,
-                                           'qty_to_deliver': order_line.quantity, 'sale_line_id': order_line.id,
-                                           'source_location_id': self.warehouse_id.stock_location_id.id,
-                                           'destination_location_id': customer_location.id}))
-            delivery_order.append({'name': self.env['ir.sequence'].next_by_code('picking.out') or _('New'),
-                                   'partner_id': self.partner_id.id, 'sale_order_id': self.id,
-                                   'transaction_type': 'Out', 'move_ids': stock_moves})
+                stock_moves.append(self.make_stock_moves(order_line, customer_location))
+
+            delivery_order.append(self.make_delivery_order(stock_moves))
 
         self.state = 'confirmed'
         self.env['stock.picking.ept'].create(delivery_order)
-        # new_delivery_order = self.env['stock.picking.ept'].create(
-        #     {'name': self.env['ir.sequence'].next_by_code('picking.out') or _('New'),
-        #      'partner_id': self.partner_id.id, 'sale_order_id': self.id,
-        #      'transaction_type': 'Out'})
-        #
-        # for order_line in self.order_line:
-        #     order_line.state = 'confirmed'
-        #     self.env['stock.move.ept'].create({'product_id': order_line.product_id.id, 'uom_id': order_line.uom_id.id,
-        #                                        'qty_to_deliver': order_line.quantity,
-        #                                        # 'qty_delivered': order_line.quantity,
-        #                                        'sale_line_id': order_line.id,
-        #                                        'source_location_id': self.warehouse_id.stock_location_id.id,
-        #                                        'picking_id': new_delivery_order.id,
-        #                                        'destination_location_id': customer_location.id})
+
+    def make_stock_moves(self, order_line, customer_location):
+        return (0, 0, {'product_id': order_line.product_id.id, 'uom_id': order_line.uom_id.id,
+                       'qty_to_deliver': order_line.quantity, 'sale_line_id': order_line.id,
+                       'source_location_id': order_line.warehouse_id.stock_location_id.id,
+                       'destination_location_id': customer_location.id})
+
+    def make_delivery_order(self, stock_moves):
+        return {'name': self.env['ir.sequence'].next_by_code('picking.out') or _('New'),
+                'partner_id': self.partner_id.id, 'sale_order_id': self.id,
+                'transaction_type': 'Out', 'move_ids': stock_moves}
 
     def action_set_delivery_order(self):
         if len(self.picking_ids.ids) != 0:

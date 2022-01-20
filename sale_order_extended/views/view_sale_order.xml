@@ -82,7 +82,7 @@
             <form string="Stock Update">
                 <group>
                     <field name="merge_options"/>
-                    <field name="selected_orders" attrs="{'invisible': [('merge_options', 'not in', ['3','4'])]}"/>
+                    <field name="selected_orders" options="{'no_open':True,'no_create': True}" attrs="{'invisible': [('merge_options', 'not in', ['3','4'])]}"/>
                 </group>
                 <footer>
                     <button name="marge_order" string="Marge Order" type="object" class="oe_highlight"/>
