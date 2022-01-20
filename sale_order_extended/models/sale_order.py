@@ -42,16 +42,17 @@ class SaleOrder(models.Model):
                 for deposits in deposit_products:
                     if not self.order_line.filtered(
                             lambda line: line.product_id.id == deposits.product_id.deposit_product_id.id):
-                        new_order_line.append(
-                            {'order_id': self.id, 'product_id': deposits.product_id.deposit_product_id.id,
-                             'product_uom_qty': deposits.product_id.deposit_product_qty})
+                        new_order_line.append(self.make_dict_order_line(deposits))
             else:
                 if not self.order_line.filtered(
                         lambda line: line.product_id.id == deposit_products.product_id.deposit_product_id.id):
-                    new_order_line.append(
-                        {'order_id': self.id, 'product_id': deposit_products.product_id.deposit_product_id.id,
-                         'product_uom_qty': deposit_products.product_id.deposit_product_qty})
+                    new_order_line.append(self.make_dict_order_line(deposit_products))
+
             self.env['sale.order.line'].create(new_order_line)
+
+    def make_dict_order_line(self, deposit_products):
+        return {'order_id': self.id, 'product_id': deposit_products.product_id.deposit_product_id.id,
+                'product_uom_qty': deposit_products.product_id.deposit_product_qty}
 
     def action_scan_all(self):
         """
@@ -72,15 +73,10 @@ class SaleOrder(models.Model):
                This method for performing Confirm the sales order
                :return: not any return
         """
-        # self.action_confirm()
-        print(self.warehouse_id)
-        warehouses = list(self.order_line.warehouse_id.ids)
-        print(set(warehouses))
-
-        # if self.order_line.filtered(lambda line: line.warehouse_id.id == 0):
-        #     for order_line in self.order_line:
-        #         if not order_line.warehouse_id:
-        #             order_line.warehouse_id = self.warehouse_id.id
+        if self.order_line.filtered(lambda line: line.warehouse_id.id == 0):
+            for order_line in self.order_line:
+                if not order_line.warehouse_id:
+                    order_line.warehouse_id = self.warehouse_id.id
 
     def _find_computed(self):
         """
@@ -141,8 +137,8 @@ class SaleOrder(models.Model):
             pricelist = self.env['product.pricelist'].browse(self.pricelist_id.id)
             variants = self.env['product.product'].search([('product_tmpl_id', 'in', self.product_tmpl_ids.ids)])
             for variant in variants:
-                Is_availabe = variant.with_context(location=self.warehouse_id.id)._product_available(variant)
-                if Is_availabe.get(variant.id)['qty_available'] > 0:
+                qty_availabe = variant.with_context(location=self.warehouse_id.id)._product_available(variant)
+                if qty_availabe.get(variant.id)['qty_available'] > 0:
                     res = pricelist.get_products_price(variant, [1.0], self.partner_id, False, False)
                     order_line.append((0, 0, {'product_id': variant.id, 'product_uom': variant.uom_id.id,
                                               'price_unit': res.get(variant.id)}))
