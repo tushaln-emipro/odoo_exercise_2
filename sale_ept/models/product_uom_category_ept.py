@@ -7,3 +7,4 @@ class UomCategory(models.Model):
 
     name = fields.Char(string="UOM", help="UOM Name")
     uom_ids = fields.One2many(comodel_name='product.uom.ept', inverse_name="uom_category_id", string='UOM', help="UOM")
+    company_id = fields.Many2one(comodel_name='res.company', string='Company', help='Company')

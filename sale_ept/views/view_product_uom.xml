@@ -17,6 +17,7 @@
             <form string="Product UOM">
                 <group>
                     <field name="name"/>
+                    <field name="company_id"/>
                 </group>
                 <group>
                 </group>

@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <tree string="UOM Category">
                 <field name="name"/>
+                <field name="company_id"/>
             </tree>
         </field>
     </record>
@@ -16,6 +17,7 @@
             <form string="UOM Category">
                 <group>
                     <field name="name"/>
+                    <field name="company_id"/>
                 </group>
                 <group>
                 </group>
